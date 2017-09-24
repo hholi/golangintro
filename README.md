@@ -2,7 +2,7 @@
 This repo has the information neccessary to prepare for and participate in the workshop. 
  
 # Prerequisites
-_More details to come_ 
+ 
 Here are what you need to prepare and bring
 - Bring your laptop with Linux/OSX/Windows
 - Install a code editor of your choice and optionally some go support plugin 

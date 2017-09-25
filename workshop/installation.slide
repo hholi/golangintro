@@ -1,0 +1,41 @@
+
+Introduction to Go
+installing the tools
+24 Aug 2017
+Tags: golang, noob, installation
+
+Hallgeir Holien
+Technology Optimist, Statoil
+halh@statoil.com
+http://hallgeirholien.no
+@hallgeirholien
+...
+
+
+* Install go on Linux
+	curl -O https://storage.googleapis.com/golang/go1.8.3.linux-amd64.tar.gz
+	mkdir ~/opt
+	tar -C ~/opt -xzf go1.8.3.linux-amd64.tar.gz 
+
+* Configure environment on Linux
+In my .bashrc
+
+	export GOROOT=$HOME/opt/go
+	export PATH=$GOROOT/bin:$PATH
+	export GOPATH=$HOME/opt/gopackages
+	export PATH=$GOPATH/bin:$PATH
+
+In new terminal
+
+	go version
+
+* Get and install the tool present
+
+	go get golang.org/x/net
+	go get golang.org/x/tools
+	go install golang.org/x/tools/cmd/present
+	which present
+
+
+* Notes
+https://github.com/fheng/golang-intro/blob/master/chapter-one.md

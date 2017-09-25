@@ -1,0 +1,1134 @@
+
+Introduction to Go
+what, why, how
+26 Sep 2017
+Tags: golang, noob
+
+Hallgeir Holien
+Technology Optimist, Statoil
+halh@statoil.com
+http://hallgeirholien.no
+@hallgeirholien
+
+* Welcome
+
+- Experience with go?
+: If you already have tried go please prioritize some other track 
+
+- Several slides use examples by Robert Griesemer, Fransesc Compoy and Caleb Doxsey
+
+* Wake up
+Why learn another language
+"Fear the man with one book"
+
+* First thing
+Join the slack channel for this workshop
+[[https://statoil.slack.com/messages/C6Y9TBX5K/details/][https://statoil.slack.com/messages/C6Y9TBX5K]]
+
+So you may share information and revelations as you proceed
+
+Practices will require additional information you find online
+
+
+* Some backgrund on go 
+
+.image  img/Gogophercolor.png 500 _
+.caption _Gopher_ by [[http://www.reneefrench.com][Renée French]]
+: Do not be fooled by the simplicity of the Gopher
+
+* The start
+- 3 collegues on Google struggling with C/C++ and productivity
+- compile time
+- memory issues
+- readability
+
+* Literature on good language design was sparse - some inspiration from:
+
+.image img/HoaresPLHints.JPG 400 600
+
+- "Hints on Programming Language Design" (C.A.R. Hoare, 1973)
+- "Everything you always wanted to know about programming languages but were afraid to ask" (C.A.R. Hoare, 1978)
+
+
+* First design notes
+
+	Date: Sun, 23 Sep 2007 23:33:41 -0700
+	From: "Robert Griesemer" <gri@google.com>
+	To: "Rob 'Commander' Pike" <r@google.com>, ken@google.com
+	Subject: prog lang discussion
+	...
+	*** General:
+	Starting point: C, fix some obvious flaws, remove crud, add a few missing features
+	  - no includes, instead: import
+	  - no macros (do we need something instead?)
+	  - ideally only one file instead of a .h and .c file, module interface
+	should be extracted automatically
+	  - statements: like in C, though should fix 'switch' statement
+	  - expressions: like in C, though with caveats (do we need ',' expressions?)
+	  - essentially strongly typed, but probably w/ support for runtime types
+	  - want arrays with bounds checking on always (except perhaps in 'unsafe mode'-see section on GC)
+	  - mechanism to hook up GC (I think that most code can live w/ GC, but for a true systems
+	    programming language there should be mode w/ full control over memory allocation)
+	  - support for interfaces (differentiate between concrete, or implementation types, and abstract,
+	    or interface types)
+	  - support for nested and anonymous functions/closures (don't pay if not used)
+	  - a simple compiler should be able to generate decent code
+	  - the various language mechanisms should result in predictable code
+	...
+
+* History
+- Developed in 2007 by Robert Griesemer, Rob Pike, and Ken Thompson
+- Standard within Google 2008
+- Version 1.0 released 2012
+- Version 1.9 released August 2017
+- In 2017 on place 17 on TIOBE 
+.link https://www.tiobe.com/tiobe-index/ TIOBE index
+
+
+A deep dive into the Go evolution may be read here:
+[[https://talks.golang.org/2015/gophercon-goevolution.slide][https://talks.golang.org/2015/gophercon-goevolution.slide]]
+
+* What is go?
+
+* Go is
+
+ 
+- open source
+
+- statically typed
+
+- multi-paradigm (imperative, functional, object-oriented)
+
+- compiled
+
+- memory safe
+
+- type safe
+
+* Why Go?
+
+Go was created for:
+
+- scalability
+
+- concurrency
+
+- simplicity / clarity
+
+: * Why go ?
+
+: - Performant, similar to C/C++, Java, Rust
+: - Concurrency - with low threshold
+: - Safe, types required, no null pointer mess
+: - Small
+: - Self contained executables
+: - Networking
+: - Good cross platform support
+: - Interfaces
+: - Reflection
+
+: Golang was created to be usable across multiple platforms. It has plenty of built-in language features that enable easy cross-platform development. First of all, you need to be aware of what you already have at your disposal built into the language in a standard library. Many things that might seem tedious and complicated to handle across different platforms are already there for your taking. Another indisputable advantage is the support for cross compilation with lots of tutorials and instructions on how to do it best.
+: Networking - make your own proxy with 50 lines of code
+: HTTP/2 server with ~3 lines of code
+
+.link http://letzgro.net/blog/9-reasons-to-choose-golang-for-your-next-web-application/ 9 reasons
+
+
+* Who uses Go?
+
+Google:
+
+- YouTube
+- dl.google.com
+
+Others:
+
+- Docker
+- SoundCloud
+- Canonical
+- CloudFlare
+- Mozilla
+- ...
+
+[[http://golang.org/wiki/GoUsers][golang.org/wiki/GoUsers]]
+
+
+
+.link https://github.com/golang/go/wiki/Projects github.com/golang/go/wiki/Projects
+.link http://www.infoworld.com/article/2843821/application-development/10-open-source-projects-google-go.html 10 big projects
+
+: This slide deck is served by the tool present written in go 
+: Syncthing is a bittorrent like, safe, file replicating across multiple location/devices tool
+
+* Learning resources
+
+During the excercises it will be neccessary to retrieve more information from online resources.
+
+Effective Go  [[https://golang.org/doc/effective_go.html][https://golang.org/doc/effective_go.html]]
+
+Here you may test different part of the go language online
+[[https://gobyexample.com/][https://gobyexample.com/]]
+
+Playgrounds
+[[https://play.golang.org/][https://play.golang.org/]]
+
+
+* How to participate here
+- Run the commands I show
+- Either do the lessons (if you want to learn go)
+- Or just follow the presentation (may be boring)
+- Help your neighbour (higher score on caring)
+
+: Of course you will 
+
+- Use the slack channel
+	
+- You will receive a PDF version of the slide deck after the workshop
+
+
+* Some hands on
+Have all been able to set up the tools?
+.image  img/Golang.png
+.caption _Gopher_ by [[http://www.reneefrench.com][Renée French]]
+
+* How to get started
+- Install golang (most common platforms)
+- Install editor of choice (VS Code, Eclipse, Sublime, Atom, etc)
+- Install support packages related to your editor
+- Or just use a simple editor + command line
+
+.link https://golang.org/doc/install
+
+* Clone git repo
+All slides and code is here     (... also the solutions if you want to cheat)
+.link https://github.com/hholi/golangintro github.com/hholi/golangintro
+
+First time
+
+	git clone github.com/hholi/golangintro
+
+Later, pull changes
+
+	git pull
+
+* The first program
+
+* How to read a go program
+
+.code 0-hello/hello.go HL1
+: All files must be part of a package
+
+* How to read a go program
+
+.code 0-hello/hello.go HL2
+
+* How to read a go program
+
+.play -edit 0-hello/hello.go HL3
+: All programs need a main() function as entry pointer
+
+* Tools for navigating the libraries
+
+Information on a package
+
+	godoc fmt
+
+Information on a function
+
+	godoc fmt Println
+
+
+* Hello world
+Create a file hello.go
+.code 0-hello/hello.go
+
+Run it
+
+	go run hello.go
+
+* Capabilities
+
+* Simple types
+
+- Boolean: bool
+- Integers: uint8(=byte), uint16, uint32, uint64, int8, int16, int32(=rune) and int64
+
+- Floating point: float32 and float64
+- Floating point comples: complex64 and complex128
+
+- Text: string
+
+- Pointers: *
+- Functions ()
+
+* Types, continued
+
+- Interfaces
+- Structs
+- Arrays
+- Slices
+- Map
+
+* Variables and constants
+
+	var text string
+	text = "Hello"
+ 
+	const myname = "Hallgeir"
+ 
+	const Φ = iota*1i - 1/1i   
+
+* Infer the variable type
+.play hello2.go
+: Using the inference method Go will create a variable based on the literal you assign to the variable 
+: And add line feed at end of message
+
+# * Play with go
+# .play -edit 0-hello/hello.go
+
+# * Go code in present
+# .code -numbers 0-hello/hello.go
+
+* Control structures
+
+
+* If
+
+	if x > max {
+		x = max
+	}
+ 
+
+	if x := f(); x < y {
+		return x
+	} else {
+		return y
+	}
+
+* For loop
+
+	for i := 0; i < 10; i++ {
+		f(i)
+	}
+ 
+	var somenumbers [10]int
+	for i, anumber := range somenumbers {
+		sum += anumber
+	}
+
+* No do-while, while
+
+The Go for loop is similar to—but not the same as—C's. It unifies for and while and there is no do-while. There are three forms, only one of which has semicolons.
+
+	// Like a C for
+	for init; condition; post { }
+
+	// Like a C while
+	for condition { }
+
+	// Like a C for(;;)
+	for { }
+
+* Switch
+
+	switch i {
+		case 0: fmt.Println("Zero")
+		case 1: fmt.Println("One")
+		case 2: fmt.Println("Two")
+		case 3: fmt.Println("Three")
+		case 4: fmt.Println("Four")
+		case 5: fmt.Println("Five")
+		default: fmt.Println("Unknown Number")
+	}
+
+* Arrays, slices, maps
+
+.play -edit maps.go
+
+: * Slices
+
+: Kind of view over underlying arrays
+
+: 	var x []float64
+
+
+* Scope, visibility
+
+* Exporting 
+- Types and funcs in upper case are visible outside the package
+
+	func TestHello()
+
+: - Package name is last part of folder structure
+
+: package http
+ 
+: import "net/http"
+
+
+* Building
+
+* Compile
+.image img/compiling.png 550 _
+
+* Compile
+
+- Compile time up to 40x faster than C++
+- Able to statically link for simplicity in deployment
+ 
+- To create an executable file:
+
+	go build hello.go
+
+
+* Package management
+
+- Was not part of the first releases
+- Early years several add ons (godep, gvt, govendor, glide...)  
+- As of 1.8 dep (https://github.com/golang/dep)
+
+	go get -u github.com/golang/dep/cmd/dep
+
+: thats all about package management here
+
+* Practice A: Simple fizzbuzz
+
+* fizzbuzz
+
+For each integer from 1 to 100
+
+- If it is divisible with 3 print fizz
+
+- If it is divisible with 5 print buzz
+
+- Else print the number
+
+* Solution to A
+.play A-fizz-simple/fizzbuzz-simple.go
+
+* What did we forget now ?
+: TDD
+
+* Testing
+: Testing is built into go, basic testing is out of the box
+* A first look at a test
+
+	import (
+		"testing"
+		"log"
+	)
+
+	func TestIt (t *testing.T) {
+		if salary < 9999999999 {
+			t.Fail()
+			log.Println("something strange going on")
+		}
+	}
+
+Test files are colocated with source under test
+Suffix _test
+So main.go is tested by main_test.go
+
+* Create first test
+
+* Do this: Hello, test driven
+
+In a new folder, make to files: hello.go and hello_test.go
+
+.code 01-hellotest/hello.go
+.code 01-hellotest/hello_test.go
+: Important that func name is uper case to be visible outside a file
+
+* Running tests
+	go test
+In a folder will run all tests found
+
+* Practice B: Did you do it test driven?
+
+* Solution to B
+
+One of the tests may look like this
+
+	func TestFizzbuzz_3(t *testing.T) {
+		result := FizzBuzz(3)
+		if "fizz" != result {
+			t.Fail()
+			log.Println("expected the message for 3 to be fizz")
+		}
+	}
+
+* go command line
+- run
+- build
+- install
+- test
+- get
+- doc
+++
+
+* Formatting code
+Never bother again with different code styles
+Some editor plugins use gofmt upon save to enforce code style
+Try making a file with untidy.go with untidy code and run	
+
+	gofmt -w untidy.go
+
+* Servers
+	godoc -http=:6060
+Open url http://localhost:6060/
+
+Then you have go documentation locally
+
+
+
+* Some Go features
+
+* Go types
+
+- primitive types
+
+	int, uint, int8, uint8, ...
+	bool, string
+	float32, float64
+	complex64, complex128
+
+- structs
+
+	struct {
+		Name string
+		Age  int
+	}
+
+- slices and arrays
+
+	[]int, [3]string, []struct{ Name string }
+
+- maps
+
+	map[string]int
+
+* Kinds of types (continued)
+
+- pointers
+
+	*int, *Person
+
+- functions
+
+	func(int, int) int
+
+- channels
+
+	chan bool
+
+- interfaces
+
+	interface {
+		Start()
+		Stop()
+	}
+
+* Type declarations
+
+	type [name] [specification]
+
+`Person` is a `struct` type.
+
+	type Person struct {
+		name string
+		age  int
+	}
+
+`Celsius` is a `float64` type.
+
+	type Celsius float64
+
+* Function declarations
+
+	func [name] ([params]) [return value]
+	func [name] ([params]) ([return values])
+: Observe that functions may be anonymous - lambdas
+: and may return several values
+
+A sum function:
+
+	func sum(a int, b int) int {
+		return a + b
+	}
+
+A function with multiple return values:
+
+	func divMod(a, b int) (int, int) {
+		return a / b, a % b
+	}
+
+Made clearer by naming the return values:
+
+	func divMod(den, div int) (quo, rem int) {
+		return den / div, den % div
+	}
+
+* Invoke function with multiple return values
+
+: quo, rem := divMod(21, 4)
+.play -edit divmod.go
+
+* No exceptions in Go
+
+So err is very common as the last of several return values:
+
+	result, err := doSomeOperations()
+	if err != nil {
+		// Something went wrong!
+	}
+
+* If statement has an optional part
+
+	if [statement], condition { statement }
+
+The first statement may be an invokation:
+
+	if result, err := doSomeOperation(), err != nil { 
+		// Something went wrong!
+	}
+
+
+This is a very common construct in go
+
+
+* Method declarations
+
+	func ([receiver]) [name] ([params]) ([return values])
+
+A method on a struct:
+
+	func (p Person) IsMinor() bool {
+		return p.age < 18
+	}
+
+But also a method on a `float64`:
+
+	func (c Celsius) Freezing() bool {
+		return c <= 0
+	}
+
+_Constraint:_ Methods can be defined *only* on types declared in the same package.
+
+	// This won't compile
+	func (s string) Length() int { return len(s) }
+
+* Declaring variables
+
+Normal declaration:
+
+    var text string = "hello"
+
+You can omit types:
+
+    var text = "hello"
+
+And inside of functions:
+
+    text := "hello"
+
+Other types
+
+    a := 0                             // int
+    b := true                          // boolean
+    f := 1.0                           // float64
+    p := Person{"Hallgeir", "Holien"}  // Person
+
+
+
+* http servers
+
+* Simple http server
+.play -edit 12-simplest-server/simplest-server-b.go
+
+(12-simplest-server/simplest-server-b.go)
+
+* http with router
+.code 2-server-hello/hello.go /start1 OMIT/,/end1 OMIT/
+
+(2-server-hello/hello.go)
+
+* http, the handlefunc
+.code 2-server-hello/hello.go /start2 OMIT/,/end2 OMIT/
+
+(2-server-hello/hello.go)
+
+* http, the business logic
+.play -edit 2-server-hello/hello.go /start3 OMIT/,/end3 OMIT/
+
+(2-server-hello/hello.go)
+
+to test
+
+	curl -XPOST http://localhost:3001/api/echo -H 'Content-type:application/json' 
+	-d '{"message":"Heisann", "name":"Hallgeir"}'
+
+* Testing http server
+- Using package "net/http/httptest"
+- See example in 2-server-hello/hello_test.go
+
+
+
+
+* JSON
+
+
+	import "encoding/json"
+	type Message struct {
+		Message string `json:"message"` //tells the decoder what to decode into
+		Stamp   int64  `json:"stamp,omitempty"`
+		Name string `json:"name"`
+	}
+
+- Using go reflection and Reader/Writer interfaces behind the scene
+- Preferred way for data transport
+
+* Refine towards RESTful services
+
+You may study the example on your own time
+[[https://thenewstack.io/make-a-restful-json-api-go/][https://thenewstack.io/make-a-restful-json-api-go/]]
+
+
+
+
+
+* Practice C: Fizzbuzz server
+
+* We now want an http server for fizzbuzz
+- You have seen how to make the Hello server
+- Now create a server that given a number returns a text
+- Remember to make tests
+
+	curl -XPOST http://localhost:3001/api/echo -H 'Content-type:application/json' 
+	-d '{"number":"15"}'
+
+* Solution to C
+.code C-fizz-server/fizzbuzz_server.go
+
+* A test for C
+.code C-fizz-server/fizzbuzz_server_test.go
+
+* Practice D: Fizzbuzz server, list
+
+* We now extend to work on a range
+- Parameters from and to
+- Return a list of results, pair(number, string)
+
+- Is this new business logic?
+- Where do you want to handle the range?
+ 
+ 
+ 
+	curl -XPOST http://localhost:3001/api/fizzbuzzrange -H 'Content-type:application/json' 
+		-d '{"from":"1", "to":"16"}'
+ 
+	{"fizzbuzzresult":[{"number":1,"result":"1"},{"number":2,"result":"2"},{"number":3,
+	"result":"fizz"},{"number":4,"result":"4"},{"number":5,"result":"buzz"},{"number":6,
+	"result":"fizz"},{"number":7,"result":"7"},{"number":8,"result":"8"},{"number":9,
+	"result":"fizz"},{"number":10,"result":"buzz"},{"number":11,"result":"11"},
+	{"number":12,"result":"fizz"},{"number":13,"result":"13"},{"number":14,"result":"14"},
+	{"number":15,"result":"fizzbuzz"},{"number":16,"result":"16"}],"stamp":1506078883}
+
+* Hints
+- append to arrays
+- json encoder handle nested structs
+
+* Solution to D:
+
+	type FizzBuzzResult struct {
+		Number int 		`json:"number"` 
+		Result string 	`json:"result"` 
+	} 
+ 
+	type MessageResp struct {
+		Results []FizzBuzzResult `json:"fizzbuzzresult"`
+		Stamp  int64  `json:"stamp,omitempty"`
+	}
+ 
+	func FizzBuzzFromTo(from int, to int) []FizzBuzzResult {
+		var allresults []FizzBuzzResult
+		for number := from; number <= to; number++ {
+			var result = FizzBuzzResult{number, FizzBuzz(number)}
+			allresults = append(allresults, result)
+		}
+		return allresults
+	}
+
+
+
+* Pointers and memory allocation
+
+* Pointers
+
+Go has pointers:
+
+    var p *int
+    p = new(int)
+
+But no pointer arithmetics:
+
+    var p *int = &a[0]
+    var q = p+2            // invalid
+
+There's `new` but there's no `delete`.
+
+Memory is garbaged collected after it's no longer accessible.
+
+* Memory allocation
+
+The compiler decides where to allocate based on escape analysis.
+
+Using `new` doesn't imply using the heap:
+
+`stack.go`:
+
+    func get() int {
+        n := new(int)
+        return *n
+    }
+
+And not all values in the heap are created with `new`:
+
+`heap.go`:
+
+    func get() *int {
+        n := 4
+        return &n
+    }
+
+* Polymorphism
+
+- Using interfaces
+- Implicit
+- Composition
+
+* Interface example
+.code 25-interface/shapes.go /start1 OMIT/,/end1 OMIT/
+
+* Interface example, cont.
+.play -edit 25-interface/shapes.go /start2 OMIT/,/end2 OMIT/
+
+: * Composite interface
+
+
+: .code 26-composition/car.go
+: https://code.tutsplus.com/tutorials/lets-go-object-oriented-programming-in-golang--cms-26540 
+
+* Control 
+
+* Defer
+.play -edit 15-control/defer-stack.go
+
+
+* Defer to ensure resource deallocation
+
+If you add defer after opening a resource handle you will avoid some headaches
+	
+	...
+	f, _ := os.Open(filename)
+	defer f.Close()
+	...
+
+No need to be afraid that errors or exits may leave the resource locked.
+When rolling the function of the stack the prescribed defer function will be invoked.
+
+* Panic, defer
+
+.play -edit panic.go
+
+* Garbage collection
+
+Go is a garbage collected language
+
+But it's easy to limit heap allocations
+
+- many values are allocated on the stack
+
+- object pools: [[sync.Pool][http://golang.org/pkg/sync/#Pool]]
+
+- contiguous area of memory
+
+: .play go4cpp/sizes.go /type/,
+
+* More about garbage collection
+
+Trusted in production.
+
+Brad Fitzpatrick's talk on migrating dl.google.com from C++ to Go:
+
+- [[https://talks.golang.org/2013/oscon-dl.slide#1][dl.google.com: Powered by Go]]
+
+Current state and road plan:
+
+- [[http://golang.org/s/go14gc][golang.org/s/go14gc]]
+
+* The goroutine
+- Goroutines are 'lightweight processes'
+- Go has its own scheduler
+- Go may coordinate lots of concurrent goroutines in each thread
+- By default go launch one thread per CPU core
+- Multiplexed on several threads so blocking is avoided
+- Initially only 8K stack is allocated per goroutine
+- Small overhead, scales good to 100s and 1000s of goroutines
+- Go support easy creation and coordination av goroutines
+- Not the same as parallelism!
+
+* How does such code look like?
+
+	go list.Sort()  // run list.Sort concurrently; don't wait for it.
+
+* Lightweight concurrency
+Consider this code
+
+	// Blocking
+	handleRequest()
+
+* Lightweight concurrency
+	// No blocking - runs concurrently
+	// in a separate goroutine
+	go handleRequest()
+: By adding go the go runtime make sure to let the handleRequest run concurrently
+: It is not in a separate thread
+: 
+: At startup it normally runs 1 thread per CPU core and allocate go routines to threads
+: If the scheduler discover that go routines are blocked on one tread it rechedules it on another thread
+: Go may handle hundred of thousands of go routines without problems 
+
+
+* What does this do?
+
+What happens when Announce is called?
+
+	func Announce(message string, delay time.Duration) {
+		go func() {
+			time.Sleep(delay)
+			fmt.Println(message)
+		}()  // Note the parentheses - must call the function.
+	}
+
+: First time you see anonymous functions in go, closures
+: Anounce returns immediately
+: After delay time the message is printed
+: Code shown lack coordination/communication
+
+* Mechanisms for go routine cooperation
+Mutex _not_recommended_
+Channels  *the*go*way*of*communicating*
+
+* Channels
+
+"Do not communicate by sharing memory; instead, share memory by communicating."
+
+Based on a CSP pattern by Tony Hoare in 1978
+(Communicating Sequential Processes)
+
+Some other languages which base task communication on CSP are Erlang, Occam and Ada.
+Which are field proven for reliably supporting multi tasking systems.
+
+	ci := make(chan int)            // unbuffered channel of integers
+	cj := make(chan int, 0)         // unbuffered channel of integers
+	cs := make(chan *os.File, 100)  // buffered channel of pointers to Files
+
+* Channel usage
+
+	c := make(chan int)  // Allocate a channel.
+	// Start the sort in a goroutine; when it completes, signal on the channel.
+	go func() {
+		list.Sort()
+		c <- 1  // Send a signal; value does not matter.
+	}()
+	doSomethingForAWhile()
+	<-c   // Wait for sort to finish; discard sent value.
+
+* Ping
+.play -edit ping.go
+
+* Channels, functions, goroutines
+- Channels and functions are first class values in go
+- Goroutines have low cost
+: You may pass channels and functions around as other objects
+: Combine these facts - what may you create?
+
+: * Example: fmt.Print
+
+
+: * Example: Queue producer consumer
+
+: * Example: Ping-pong
+
+* Race conditions
+
+* Still possible if coded bad
+.play -edit 27-race/race.go /startrace/,/endrace/
+: 1 gor ok, add 3 more
+: fail - why?
+: any ideas, experience
+
+* Tool to detect race conditions
+
+Go comes with built in tool to detect race conditions:
+
+	go run -race race4.go
+ 
+: line 10 - pointer to shared memory
+: sharing memory is bad
+: rewrite to avoid such sharing
+
+* Avoid race conditions by not sharing memory
+.play -edit 27-race/racefix.go /startrace/,/endrace/
+
+
+* Practice E: concurrency
+
+* Make a concurrent solution for fizzbuzz
+- Modify your original fizzbuzz business logic with a delay of 2 seconds
+- See how that behaves
+- Now create one goroutine for each number to evaluate
+- No need for the list to be sorted on number when returning
+
+: no need to sync when goroutines finish
+
+* Solution to E
+
+	time.Sleep(2*time.Second)
+ 
+	func FizzBuzzEval(i int, c chan FizzBuzzResult) {
+		c <- FizzBuzzResult{i, FizzBuzz(i)}
+	}
+ 
+	cfb := make(chan FizzBuzzResult)
+ 
+	go FizzBuzzEval(number, cfb)
+  
+	result := <- cfb
+  
+
+* Test for E
+- Not the same as in D, depend on sorting
+
+* How come Go is fast
+
+Good read on 
+[[https://dave.cheney.net/2014/06/07/five-things-that-make-go-fast][https://dave.cheney.net/2014/06/07/five-things-that-make-go-fast]]
+- Lean on memory - low overhead
+- Function inlining, avoiding calls with related stack operations
+- Escape analysis - compile time analysis to see if reference is leaked out, i.e. if using stack instead of heap
+- Goroutines, low overhead switching
+- Copying stacks when growth required
+
+
+* OO programming
+- No inheritance
+- Using embedding/composition
+- Interfaces (implicit, not declarative)
+- Methods is a function related to types
+
+* Functional programming
+- Closures(lambdas)
+- Functions as parameters / first class objects
+
+
+* More reading / references
+.link https://golang.org/ref/spec The Go language spec
+.link https://rominirani.com/setup-go-development-environment-with-visual-studio-code-7ea5d643a51a Visual Code with Go
+.link http://halyph.com/blog/2015/05/18/golang-presentation-tool.html Presentation tool for this slide deck
+
+Basic intro book
+[[https://www.golang-book.com/public/pdf/gobook.0.pdf][https://www.golang-book.com/public/pdf/gobook.0.pdf]]
+
+Launch speech for Go in 2012
+[[https://talks.golang.org/2012/splash.article][https://talks.golang.org/2012/splash.article]]
+
+Go vs. C
+[[http://dead10ck.github.io/2014/12/15/go-vs-c.html][http://dead10ck.github.io/2014/12/15/go-vs-c.html]]
+
+* Wrap up
+: Must have 10 minutes for this at the end
+
+* We have covered
+- Background
+- History
+- Basics
+- Go tooling (some of it)
+- Simple server (http, json)
+- Interfaces
+- Concurrency
+
+* Reflection
+- Would you try it on own projects?
+- Pros/cons
+- What to you miss?
+- Going forward, what would you like to see more of?
+
+* Feedback
+- I would like feedback on the presentation
+- Come talk to me or send me a note on post@hallgeirholien.no
+
+* Backup slides and notes
+
+* Making presentation with Go
+- This slide deck is served by 'present'
+- Simple web server
+- Slides are written in plain Text
+- Source is on github - TBD
+.link https://godoc.org/golang.org/x/tools/present Present
+
+
+* Install go on Linux
+curl -O https://storage.googleapis.com/golang/go1.8.3.linux-amd64.tar.gz
+mkdir ~/opt
+tar -C ~/opt -xzf go1.8.3.linux-amd64.tar.gz 
+
+* Configure environment on Linux
+In my .bashrc
+export GOROOT=$HOME/opt/go
+export PATH=$GOROOT/bin:$PATH
+export GOPATH=$HOME/opt/gopackages
+export PATH=$GOPATH/bin:$PATH
+
+* Get and install the tool present
+go get golang.org/x/net
+go get golang.org/x/tools
+go install golang.org/x/tools/cmd/present
+which present
+
+
+* HTML
+
+- Template transformation in standard package html/template
+
+* Practice F: Present fizzbuzz results in browser
+
+- Return html to browser instead of json
+- Present a table with the results
+- Use the html template
+
+* Solutions to F: 
+
+
+
+* HTTP/2
+Go support http/2 out of the box
+[[https://http2.golang.org/][https://http2.golang.org/]]
+
+Higher performance due to:
+* Concurrency
+* Binary transfer protocol
+
+[[http://http2.golang.org/gophertiles?latency=30][http://http2.golang.org/gophertiles?latency=30]]
+vs
+[[https://http2.golang.org/gophertiles?latency=30][https://http2.golang.org/gophertiles?latency=30]]
+
+* Microservices with Go
+- You do not want to hide fast micro services behind slow interfaces?
+- Use gRPC to offer API
+-- On top of HTTP/2
+- Only if neccessary offer those as REST via a bridge (http://www.grpc.io/blog/coreos)
+- 
+
+
+

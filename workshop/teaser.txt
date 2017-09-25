@@ -1,0 +1,7 @@
+Go
+Do you want to have the speed of the C-languages without bothering with memory issues?
+Want to be able to write an http server in 20 lines or highly efficient concurrent code with little hassle?
+Then learn go - the language behind tools such as Gmail, Kubernetes, Docker, InfluxDB, Dropbox and more.
+
+Preparations for the workshop
+See information in https://github.com/hholi/golangintro
